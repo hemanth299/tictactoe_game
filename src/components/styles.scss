@@ -1,0 +1,73 @@
+// ===== Variables =====
+$cell-size: 100px;
+$border-color: #333;
+$text-color: #222;
+$hover-color: #e6e6e6;
+$active-bg: #007bff;
+$active-text: #fff;
+
+// ===== Board Layout =====
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, $cell-size);
+  grid-template-rows: repeat(3, $cell-size);
+  gap: 0;
+  border: 2px solid $border-color;
+  background-color: white;
+  width: max-content;
+  margin: 2rem auto;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px; // Optional spacing below the heading
+}
+
+// ===== Square Cells =====
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: $text-color;
+  width: $cell-size;
+  height: $cell-size;
+  background-color: white;
+  border: 1px solid $border-color;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: $hover-color;
+    transform: scale(1.05);
+  }
+
+  &.active {
+    background-color: $active-bg;
+    color: $active-text;
+    cursor: not-allowed;
+  }
+}
+
+// ===== Optional Responsive Handling =====
+@media (max-width: 400px) {
+  $cell-size: 70px;
+
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    grid-template-columns: repeat(3, $cell-size);
+    grid-template-rows: repeat(3, $cell-size);
+  }
+  .board-row {
+    display: flex;
+  }
+  
+
+  .square {
+    width: $cell-size;
+    height: $cell-size;
+    font-size: 2rem;
+  }
+}

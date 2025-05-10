@@ -1,4 +1,4 @@
-// ===== Variables =====
+// ===== Variables ===== 
 $cell-size: 100px;
 $border-color: #333;
 $text-color: #222;
@@ -8,21 +8,24 @@ $active-text: #fff;
 
 // ===== Board Layout =====
 .board {
-  display: grid;
-  grid-template-columns: repeat(3, $cell-size);
-  grid-template-rows: repeat(3, $cell-size);
-  gap: 0;
-  border: 2px solid $border-color;
+  display: flex;
+  flex-direction: column; // Stack rows vertically
+  gap: 0; // No gap between rows
+  width: max-content; // Ensure the board fits its content
+  margin: 2rem auto; // Center the board horizontally
+  border: 2px solid $border-color; // Outer border for the board
   background-color: white;
-  width: max-content;
-  margin: 2rem auto;
 }
-h1 {
+.title{
   text-align: center;
-  margin-bottom: 20px; // Optional spacing below the heading
+  font-size: 2rem;
+  color: $text-color;
+  margin-bottom: 1rem;
+}
+.board-row {
+  display: flex; // Align squares horizontally in each row
 }
 
-// ===== Square Cells =====
 .square {
   display: flex;
   align-items: center;
@@ -33,13 +36,13 @@ h1 {
   width: $cell-size;
   height: $cell-size;
   background-color: white;
-  border: 1px solid $border-color;
+  border: 1px solid $border-color; // Add borders to create the grid effect
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
     background-color: $hover-color;
-    transform: scale(1.05);
+    transform: scale(1.05); // Slight zoom effect on hover
   }
 
   &.active {
@@ -47,27 +50,14 @@ h1 {
     color: $active-text;
     cursor: not-allowed;
   }
+
+  // Remove the right border for the last square in each row
+  &:last-child {
+    border-right: none;
+  }
 }
 
-// ===== Optional Responsive Handling =====
-@media (max-width: 400px) {
-  $cell-size: 70px;
-
-  .board {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    grid-template-columns: repeat(3, $cell-size);
-    grid-template-rows: repeat(3, $cell-size);
-  }
-  .board-row {
-    display: flex;
-  }
-  
-
-  .square {
-    width: $cell-size;
-    height: $cell-size;
-    font-size: 2rem;
-  }
+// Remove the bottom border for the last row
+.board-row:last-child .square {
+  border-bottom: none;
 }

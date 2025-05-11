@@ -67,3 +67,56 @@ $active-text: #fff;
 .board-row:last-child .square {
   border-bottom: none;
 }
+.game-container {
+  display: flex;
+  justify-content: center; // Center the board + history group
+  position: relative;      // To allow absolute positioning inside
+  margin-top: 2rem;
+}
+
+.board-wrapper {
+  position: relative;
+}
+
+.history {
+  position: absolute;
+  top: -5rem; // Align with the top of the board
+  left: calc(70% + 1rem); // Push 4rem to the right of the board
+  padding: 1rem;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: $text-color;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+
+    button {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid $border-color;
+      background-color: white;
+      color: $text-color;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
+  }
+}

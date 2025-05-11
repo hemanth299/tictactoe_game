@@ -5,14 +5,19 @@ import { Winner } from './components/Winner';
 import { StatusMessage } from './components/statusMessage';
 import { History } from './components/History';
 
+// Helper to initialize a new game
+const newGame = () => ({
+  history: [Array(9).fill(null)],
+  currentMove: 0,
+});
+
 function App() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const [player1, setPlayer1] = useState(true);
+  const [gameState, setGameState] = useState(newGame());
+  const { history, currentMove } = gameState;
 
   const currentSquares = history[currentMove];
-  const winnerRaw = Winner(currentSquares);
-  const winner = winnerRaw === 'X' ? 'Player 1 (X)' : winnerRaw === 'O' ? 'Player 2 (O)' : null;
+  const player1 = currentMove % 2 === 0;
+  const winner = Winner(currentSquares);
 
   const handleClick = (position) => {
     if (currentSquares[position] || winner) return;
@@ -22,24 +27,40 @@ function App() {
     );
 
     const newHistory = [...history.slice(0, currentMove + 1), newSquares];
-    setHistory(newHistory);
-    setCurrentMove(newHistory.length - 1);
-    setPlayer1((prev) => !prev);
+
+    setGameState({
+      history: newHistory,
+      currentMove: newHistory.length - 1,
+    });
   };
 
   const jumpToMove = (move) => {
-    setCurrentMove(move);
-    setPlayer1(move % 2 === 0);
+    setGameState((prev) => ({
+      ...prev,
+      currentMove: move,
+    }));
+  };
+
+  const resetGame = () => {
+    setGameState(newGame());
   };
 
   return (
     <div>
       <h1 className='title'>Tic Tac Toe</h1>
       <StatusMessage winner={winner} player1={player1} squares={currentSquares} />
+      
       <div className='game-container'>
-      <Board squares={currentSquares} handleClick={handleClick} />
-      <History history={history} jumpToMove={jumpToMove} />
-    </div>
+  <div className='board-wrapper'>
+    <Board squares={currentSquares} handleClick={handleClick} />
+   <button className="reset-btn" onClick={resetGame}>
+  🔄 Start New Game
+</button>
+
+  </div>
+  <History history={history} jumpToMove={jumpToMove} />
+
+      </div>
     </div>
   );
 }

@@ -22,6 +22,12 @@ $active-text: #fff;
   color: $text-color;
   margin-bottom: 1rem;
 }
+.status{
+  text-align: center;
+  font-size: 1.5rem;
+  color: $text-color;
+  margin-bottom: 1rem;
+}
 .board-row {
   display: flex; // Align squares horizontally in each row
 }

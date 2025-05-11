@@ -4,17 +4,22 @@ import './styles.scss';
 
 const Board = ()=>{
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [player1,setplayer1] = useState(true);
   const handleClick = (position) => {
+    if(squares[position]){
+      return;
+    }
     setSquares((current)=>{
       return current.map((squareValue, pos)=>{
         if(pos===position){
-          return 'X';
+          return player1?'X':'O';
         }
         else{
           return squareValue;
         }
       })
     })
+    setplayer1((current)=> !current);
   }
   const renderSquare = (index) => {
     return (

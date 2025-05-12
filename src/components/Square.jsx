@@ -1,7 +1,7 @@
 import './styles.scss';
-function Square({value, onClick}) {
-  return (
-    <button type='button' className='square'onClick={onClick}>{value}</button>
-  )
-}
+const Square = ({ value, onClick, className }) => (
+  <div className={className} onClick={onClick}>
+    {value}
+  </div>
+);
 export default Square;

@@ -1,13 +1,24 @@
 @use 'sass:color';
 
-// ===== Variables ===== 
+// ===== Variables =====
 $cell-size: 100px;
-$border-color: #333;
-$text-color: #222;
-$hover-color: #e6e6e6;
-$active-bg: #007bff;
-$active-text: #fff;
+$border-color: #ffffff; // White for grid lines
+$text-color: #000000; // White for general text
+$hover-color:pink; // Light blue for hover effect
+$active-bg: #007bff; // Blue for active squares
+$active-text: #ffffff; // White for active text
+$x-color: #e03030#ee05ee; // Bright red for X
+$o-color: blue; // Bright yellow for O
 
+// ===== Global Styles =====
+
+body {
+  background-image: url('../images/bgimage.png'); // Path to your image
+  background-size: cover; // Ensures the image covers the entire viewport
+  background-position: center; // Centers the image
+  background-repeat: no-repeat; // Prevents the image from repeating
+  height: 100%; // Ensures the body takes up the full height
+}
 
 // ===== Layout: Game Container =====
 .game-container {
@@ -17,7 +28,7 @@ $active-text: #fff;
   margin-top: 2rem;
 }
 
-// ===== Board Wrapper (board + reset) =====
+// ===== Board Wrapper =====
 .board-wrapper {
   display: flex;
   flex-direction: column;
@@ -44,35 +55,125 @@ $active-text: #fff;
 // ===== Board & Squares =====
 .board {
   display: flex;
-  flex-direction: column;
-  gap: 0;
-  width: max-content;
-  margin: 2rem auto;
-  border: 2px solid $border-color;
-  background-color: white;
+  flex-direction: column; // Stack rows vertically
+  gap: 0; // No gap between rows
+  width: max-content; // Ensure the board fits its content
+  margin: 2rem auto; // Center the board horizontally
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: #ff0000; // Green color for the strike
+    height: 4px; // Thickness of the strike line
+    width: 0; // Start with no width (hidden)
+    transform-origin: center;
+    transition: width 0.5s ease, transform 0.5s ease;
+    z-index: 1;
+  }
+
+  // Horizontal strike (rows)
+  &.strike-row-0::after {
+    top: calc(16.67% - 2px); // Position for the first row
+    left: 0;
+    width: 100%; // Full width for the strike
+  }
+
+  &.strike-row-1::after {
+    top: calc(50% - 2px); // Position for the second row
+    left: 0;
+    width: 100%; // Full width for the strike
+  }
+
+  &.strike-row-2::after {
+    top: calc(83.33% - 2px); // Position for the third row
+    left: 0;
+    width: 100%; // Full width for the strike
+  }
+
+  // Vertical strike (columns)
+  &.strike-col-0::after {
+    top: 0;
+    left: calc(16.67% - 2px); // Position for the first column
+    height: 100%; // Full height for the strike
+    width: 4px; // Thickness of the vertical strike
+  }
+
+  &.strike-col-1::after {
+    top: 0;
+    left: calc(50% - 2px); // Position for the second column
+    height: 100%; // Full height for the strike
+    width: 4px; // Thickness of the vertical strike
+  }
+
+  &.strike-col-2::after {
+    top: 0;
+    left: calc(83.33% - 2px); // Position for the third column
+    height: 100%; // Full height for the strike
+    width: 4px; // Thickness of the vertical strike
+  }
+
+ // Diagonal strikes
+&.strike-diag-0::after {
+  top: 0%; // Start from the center vertically
+  left: 0; // Start from the left edge
+  width: 141%; // Extend the width to cover the diagonal
+  height: 4px; // Thickness of the strike
+  transform: translateY(-50%) rotate(45deg); // Center the line and rotate it
+  transform-origin: left; // Rotate from the left edge
+}
+
+&.strike-diag-1::after {
+  top: 0%; // Start from the center vertically
+  right: 0; // Start from the right edge
+  width: 141%; // Extend the width to cover the diagonal
+  height: 4px; // Thickness of the strike
+  transform: translateY(-50%) rotate(-45deg); // Center the line and rotate it
+  transform-origin: right; // Rotate from the right edge
+}
 }
 
 .board-row {
   display: flex; // Align squares horizontally in each row
 }
 
+
 .square {
+
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
   font-weight: bold;
-  color: $text-color;
   width: $cell-size;
   height: $cell-size;
-  background-color: white;
-  border: 1px solid $border-color;
+  background-color: transparent; // White background for squares
+  border: 2px solid transparent; // Default border
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
-  &:hover {
-    background-color: $hover-color;
-    transform: scale(1.05);
+  &.x {
+    color: $x-color; // Bright red for X
+    animation: glitter 1.5s infinite; // Add glitter animation
+  }
+
+  &.o {
+    color: $o-color; // Bright yellow for O
+    animation: glitter 1.5s infinite; // Add glitter animation
+  }
+
+  &.winning {
+    color: rgb(62, 227, 25); // Green for winning blocks
+    animation: glitter 1.5s infinite; // Add glitter animation for winning blocks
+  }
+
+  // Add thicker borders for the Tic Tac Toe style
+  &:not(:last-child) {
+    border-right: 4px solid $border-color; // Vertical lines between squares
+  }
+
+  &:nth-child(3n) {
+    border-right: none; // Remove right border for the last square in each row
   }
 
   &.active {
@@ -81,28 +182,53 @@ $active-text: #fff;
     cursor: not-allowed;
   }
 
-  &:last-child {
-    border-right: none;
+  &:hover {
+    background-color: $hover-color;
+    transform: scale(1.05); // Slight zoom effect on hover
+  }
+}
+// Glitter animation
+@keyframes glitter {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #ee05ee, 0 0 5px #ee05ee, 0 0 5px #ee05ee;
+  }
+  50% {
+    text-shadow: 0 0 5px #fff, 0 0 5px #ee05ee, 0 0 5px #ee05ee, 0 0 5px #ee05ee, 0 0 5px #ee05ee;
+  }
+  100% {
+    text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #ee05ee, 0 0 5px #ee05ee, 0 0 5px #ee05ee;
+  }
+}
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
   }
 }
 
-// Remove the bottom border for the last row
-.board-row:last-child .square {
-  border-bottom: none;
+// Add horizontal lines between rows
+.board-row:not(:last-child) .square {
+  border-bottom: 4px solid $border-color;
 }
 
+// ===== Reset Button =====
 .reset-btn {
   padding: 0.6rem 1.2rem;
-  background-color: $active-bg;
+  background-color: rgb(212, 24, 212);
   color: $active-text;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: -30px;
 
   &:hover {
-    background-color: color.adjust($active-bg, $lightness: -10%);
+    background-color: $hover-color;
+    color: $text-color;
+    transform: scale(1.05); // Slight zoom effect on hover
   }
 
   &:active {
@@ -115,17 +241,15 @@ $active-text: #fff;
   }
 }
 
-
-
 // ===== Move History =====
 .history {
   position: absolute;
-  top: -5rem;
+  top: -8rem;
   left: calc(70% + 1rem);
   padding: 1rem;
-  border: 1px solid $border-color;
+  border: 1px solid black;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #1ec5ea;
   min-width: 160px;
 
   h2 {
@@ -148,7 +272,7 @@ $active-text: #fff;
       padding: 0.5rem;
       font-size: 0.9rem;
       cursor: pointer;
-      border: 1px solid $border-color;
+      border: 1px solid black;
       background-color: white;
       color: $text-color;
       border-radius: 4px;

@@ -17,7 +17,8 @@ function App() {
 
   const currentSquares = history[currentMove];
   const player1 = currentMove % 2 === 0;
-  const winner = Winner(currentSquares);
+  const { winner, line: winningLine } = Winner(currentSquares);
+
 
   const handleClick = (position) => {
     if (currentSquares[position] || winner) return;
@@ -52,7 +53,12 @@ function App() {
       
       <div className='game-container'>
   <div className='board-wrapper'>
-    <Board squares={currentSquares} handleClick={handleClick} />
+    <Board
+  squares={currentSquares}
+  handleClick={handleClick}
+  winningLine={winningLine}
+/>
+
    <button className="reset-btn" onClick={resetGame}>
   🔄 Start New Game
 </button>

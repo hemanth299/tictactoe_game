@@ -7,6 +7,8 @@ Deployment Done:
 link : https://tictacrelax.surge.sh/
 
 ---
+<img width="1919" height="819" alt="image" src="https://github.com/user-attachments/assets/72f46c5d-b6cf-4513-90f5-608773551981" />
+
 
 🚀 Features
 
